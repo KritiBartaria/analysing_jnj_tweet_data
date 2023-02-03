@@ -1,0 +1,1066 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2580
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;\f2\fnil\fcharset0 HelveticaNeue;
+\f3\froman\fcharset0 TimesNewRomanPSMT;\f4\ftech\fcharset77 Symbol;\f5\fnil\fcharset0 HelveticaNeue-Bold;
+\f6\fnil\fcharset0 AppleColorEmoji;}
+{\colortbl;\red255\green255\blue255;\red36\green41\blue46;\red5\green99\blue193;\red52\green53\blue56;
+\red51\green51\blue51;\red66\green139\blue202;\red33\green33\blue33;\red176\green179\blue178;\red212\green212\blue212;
+}
+{\*\expandedcolortbl;;\csgenericrgb\c14118\c16078\c18039;\csgenericrgb\c1961\c38824\c75686;\csgenericrgb\c20392\c20784\c21961;
+\csgenericrgb\c20000\c20000\c20000;\csgenericrgb\c25882\c54510\c79216;\csgenericrgb\c12941\c12941\c12941;\csgenericrgb\c69020\c70196\c69804;\csgenericrgb\c83137\c83137\c83137;
+}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}}
+\margl1440\margr1440\vieww28600\viewh14860\viewkind0
+\deftab720
+\pard\pardeftab720\ri-3600\sb240\sa240\qc\partightenfactor0
+
+\f0\b\fs40 \cf2 Viral Tweet data about JnJ-Covid 19 vaccine\
+\pard\pardeftab720\ri-3600\sa240\qj\partightenfactor0
+
+\f1\b0\fs24 \cf2 \
+\pard\pardeftab720\ri-4320\sa240\partightenfactor0
+\cf2 The repository contains collection of tweets associated with JnJ Covid-19 vaccination staring April 7, 2021. We used Twitter\'92s search API to gather historical Tweets till 20th April in descending order. We leveraged Twitter\'92s streaming API to follow specified accounts and collect the real-time tweets that mention specific keywords. To comply with Twitter\'92s\'a0{\field{\*\fldinst{HYPERLINK "https://developer.twitter.com/en/developer-terms/agreement-and-policy"}}{\fldrslt Terms of Service}}, the data is released for non-commercial research use.\
+\pard\pardeftab720\ri-3600\sb360\sa240\qj\partightenfactor0
+
+\f0\b \cf2 Data Organization\
+\pard\pardeftab720\ri-3600\sa240\qj\partightenfactor0
+
+\f1\b0 \cf2 The Tweet data are organized as follows:\
+\pard\tx720\pardeftab720\li720\fi-360\ri-3600\sb100\sa100\qj\partightenfactor0
+\ls1\ilvl0\cf2 All data files are stored in a \'91tweetdata\'92 folder.\
+The JSON response from the twitter API is stored as a Tweet.txt file. \
+\pard\tx720\pardeftab720\li720\fi-360\ri-3600\sb60\sa100\qj\partightenfactor0
+\ls1\ilvl0\cf2 The final clean and organized dataframe is stored as JnJ_dataframe.CSV file\
+\
+\pard\pardeftab720\ri-3600\sb60\sa100\qj\partightenfactor0
+
+\f0\b \cf2 How to Hydrate\
+\pard\pardeftab720\ri-3600\sb60\sa100\qj\partightenfactor0
+
+\f1\b0 \cf2 Utilized Twitter search API to pull tweets about JnJ Covid 19-vaccine between April 7th (one week before J&J vaccination was suspended in the US) till April 20th, 2021\
+\pard\pardeftab720\ri-3600\sb360\sa240\qj\partightenfactor0
+\cf2 \ul \ulc2 Prerequisite \
+	\ulnone Bearer Token - To access the Twitter API, you must pass this token with an endpoint request as an HTTP request 	header. Bearer Tokens are based on Twitter app consumer tokens.\
+\pard\pardeftab720\ri-4320\qj\partightenfactor0
+\cf2 	For more details please visit \'96  {\field{\*\fldinst{HYPERLINK "%22"}}{\fldrslt 
+\f2\fs21 \cf3 \ul \ulc3 https://developer.twitter.com/en/docs/authentication/oauth-2-0/bearer-tokens}}
+\f2\fs21 \cf4 \
+\pard\pardeftab720\ri-3600\qj\partightenfactor0
+
+\fs32 \cf4 \
+\pard\pardeftab720\ri-3600\sa320\qj\partightenfactor0
+
+\f1\fs24 \cf2 \ul Reading Tweets in JSON format\
+	\ulnone As there are millions of tweets which includes 100s of hashtags, so to filter relevant data for further processing, we 	have created a query using combination of message keywords (JNJ, johnsonandsjohnson, covid19), hashtags (#Vaxed, 	#COVID19) and created language-based rules to fetch only matching tweets of our interest.\
+	After we established the connection with the API, we will begin receiving a stream of data.\
+	The individual data streamed by this API are JSON encoded, therefore all the
+\f2\fs21 \cf5  {\field{\*\fldinst{HYPERLINK "https://developer.twitter.com/en/docs/tweets/data-dictionary/overview/tweet-object%22%20%5Ct%20%22_blank"}}{\fldrslt \cf6 \ul \ulc6 tweets}} 
+\f1\fs24 \cf2 and related information r	eturned from the API will be in JSON format. \
+	This processing will take approximately 20sec to receive complete result because of multiple GET call to Twitter 	API.\
+	Here is a snippet of how response looks:\
+\pard\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f3 \cf0 \
+\pard\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs21 \cf5  
+\f0\b\fs24 \cf0 \
+\pard\pardeftab720\ri-3600\sa320\qj\partightenfactor0
+
+\f1\b0 \cf2 \ul Dataframe creation:\
+\pard\tx720\pardeftab720\li720\fi-360\ri-3600\sb100\sa100\qj\partightenfactor0
+\ls2\ilvl0
+\f4\fs20 \cf2 \ulnone 	
+\f1\fs24 Flatten the JSON response, then filter and organize the dataframe to result in a single clean dataset\
+\ls2\ilvl0
+\f4\fs20 	
+\f1\fs24 Store the final dataset in a csv file named as \'91JnJ_dataframe.csv\'92\
+\ls2\ilvl0
+\f4\fs20 	
+\f1\fs24 Here is a snippet of the final clean dataset \cf7 \
+\pard\pardeftab720\ri-3600\sb100\sa100\qj\partightenfactor0
+\cf2 \
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth11970\trftsWidth3 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clcbpat8 \clwWidth1157\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx540
+\clvertalt \clcbpat8 \clwWidth1157\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx1080
+\clvertalt \clcbpat8 \clwWidth503\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx1620
+\clvertalt \clcbpat8 \clwWidth1241\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx2160
+\clvertalt \clcbpat8 \clwWidth476\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx2700
+\clvertalt \clcbpat8 \clwWidth387\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx3240
+\clvertalt \clcbpat8 \clwWidth387\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx3780
+\clvertalt \clcbpat8 \clwWidth389\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx4320
+\clvertalt \clcbpat8 \clwWidth800\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx4860
+\clvertalt \clcbpat8 \clwWidth869\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx5400
+\clvertalt \clcbpat8 \clwWidth496\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx5940
+\clvertalt \clcbpat8 \clwWidth854\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx6480
+\clvertalt \clcbpat8 \clwWidth502\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx7020
+\clvertalt \clcbpat8 \clwWidth550\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx7560
+\clvertalt \clcbpat8 \clwWidth547\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx8100
+\clvertalt \clcbpat8 \clwWidth1655\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 author id
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 tweet id
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 tweet created at
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 tweet text
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 retweet count
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 reply count
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 like count
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 quote count
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 name
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 username
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 location
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 description
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 account created at
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 followers count
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 following count
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 tweet count
+\f3\b0\fs24 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth11970\trftsWidth3 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clcbpat9 \clwWidth1157\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx540
+\clvertalt \clshdrawnil \clwWidth1157\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx1080
+\clvertalt \clshdrawnil \clwWidth503\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx1620
+\clvertalt \clshdrawnil \clwWidth1241\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth476\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx2700
+\clvertalt \clshdrawnil \clwWidth387\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx3240
+\clvertalt \clshdrawnil \clwWidth387\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx3780
+\clvertalt \clshdrawnil \clwWidth389\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth800\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx4860
+\clvertalt \clshdrawnil \clwWidth869\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx5400
+\clvertalt \clshdrawnil \clwWidth496\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx5940
+\clvertalt \clshdrawnil \clwWidth854\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth502\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx7020
+\clvertalt \clshdrawnil \clwWidth550\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx7560
+\clvertalt \clshdrawnil \clwWidth547\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx8100
+\clvertalt \clshdrawnil \clwWidth1655\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 1311737325395738624
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 1384642303575289856
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 2021-04-20 22:57:05
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Dow Slides As Procter &amp; Gamble Move Raises Inflation Fears; JNJ Rallies On Vaccine News - Investor's Business Daily {\field{\*\fldinst{HYPERLINK "https://t.co/qM8SGGiE8b"}}{\fldrslt \cf3 \ul \ulc3 https://t.co/qM8SGGiE8b}}
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 0
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 0
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 0
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 0
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Ailene Cocke
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 AileneCocke
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 London
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Fashionista and Vlogger aspiring to become a famous Designer
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 2020-10-01 18:38:48
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 48
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 458
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 2025
+\f3\fs24 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth11970\trftsWidth3 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clcbpat9 \clwWidth1157\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx540
+\clvertalt \clshdrawnil \clwWidth1157\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx1080
+\clvertalt \clshdrawnil \clwWidth503\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx1620
+\clvertalt \clshdrawnil \clwWidth1241\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth476\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx2700
+\clvertalt \clshdrawnil \clwWidth387\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx3240
+\clvertalt \clshdrawnil \clwWidth387\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx3780
+\clvertalt \clshdrawnil \clwWidth389\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth800\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx4860
+\clvertalt \clshdrawnil \clwWidth869\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx5400
+\clvertalt \clshdrawnil \clwWidth496\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx5940
+\clvertalt \clshdrawnil \clwWidth854\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth502\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx7020
+\clvertalt \clshdrawnil \clwWidth550\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx7560
+\clvertalt \clshdrawnil \clwWidth547\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx8100
+\clvertalt \clshdrawnil \clwWidth1655\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 1370379757355995136
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 1384642302920953856
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 2021-04-20 22:57:05
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Dow Slides As Procter &amp; Gamble Move Raises Inflation Fears; JNJ Rallies On Vaccine News - Investor's Business Daily {\field{\*\fldinst{HYPERLINK "https://t.co/Rn0hYPZPyA"}}{\fldrslt \cf3 \ul \ulc3 https://t.co/Rn0hYPZPyA}}
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 0
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 0
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 0
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 0
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 China Fitzhugh
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 ChinaFitzhugh
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 San Antonio
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Singer and Songwriter I Travel to tell my story
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 2021-03-12 14:22:51
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 232
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 673
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 1921
+\f3\fs24 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth11970\trftsWidth3 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clcbpat9 \clwWidth1157\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx540
+\clvertalt \clshdrawnil \clwWidth1157\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx1080
+\clvertalt \clshdrawnil \clwWidth503\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx1620
+\clvertalt \clshdrawnil \clwWidth1241\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth476\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx2700
+\clvertalt \clshdrawnil \clwWidth387\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx3240
+\clvertalt \clshdrawnil \clwWidth387\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx3780
+\clvertalt \clshdrawnil \clwWidth389\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth800\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx4860
+\clvertalt \clshdrawnil \clwWidth869\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx5400
+\clvertalt \clshdrawnil \clwWidth496\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx5940
+\clvertalt \clshdrawnil \clwWidth854\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth502\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx7020
+\clvertalt \clshdrawnil \clwWidth550\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx7560
+\clvertalt \clshdrawnil \clwWidth547\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx8100
+\clvertalt \clshdrawnil \clwWidth1655\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 1270220114340851712
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 1384640792011096066
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 2021-04-20 22:51:04
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Congress probes Emergent's ties to a key Trump official
+\f3\fs24 \
+
+\f2\fs15 \
+More medical news at {\field{\*\fldinst{HYPERLINK "https://t.co/0Knf9q4SKS"}}{\fldrslt \cf3 \ul \ulc3 https://t.co/0Knf9q4SKS}}
+\f3\fs24 \
+
+\f2\fs15 #PharmaTwitter #MedTwitter #MedEd
+\f3\fs24 \
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://t.co/f5f5YPWMLl"}}{\fldrslt 
+\f2\fs15 \cf3 \ul \ulc3 https://t.co/f5f5YPWMLl}}\cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 0
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 0
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 0
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 0
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Pharmaceutical Publishers Feed
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 PharmaPublisher
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Look here 
+\f6 \uc0\u55357 \u56393 
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 #Pharmaceutical news from major publishers consolidated for a more streamlined industry news experience. 
+\f6 \uc0\u55357 \u56458 \u55357 \u56798 
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 2020-06-09 05:04:18
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 1
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 0
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 1218
+\f3\fs24 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth11970\trftsWidth3 \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clcbpat9 \clwWidth1157\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx540
+\clvertalt \clshdrawnil \clwWidth1157\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx1080
+\clvertalt \clshdrawnil \clwWidth503\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx1620
+\clvertalt \clshdrawnil \clwWidth1241\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth476\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx2700
+\clvertalt \clshdrawnil \clwWidth387\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx3240
+\clvertalt \clshdrawnil \clwWidth387\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx3780
+\clvertalt \clshdrawnil \clwWidth389\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth800\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx4860
+\clvertalt \clshdrawnil \clwWidth869\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx5400
+\clvertalt \clshdrawnil \clwWidth496\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx5940
+\clvertalt \clshdrawnil \clwWidth854\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth502\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx7020
+\clvertalt \clshdrawnil \clwWidth550\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx7560
+\clvertalt \clshdrawnil \clwWidth547\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx8100
+\clvertalt \clshdrawnil \clwWidth1655\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 1270220114340851712
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 1384501415679254531
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 2021-04-20 13:37:14
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Biden aides met with U.S. health companies about supply chains
+\f3\fs24 \
+
+\f2\fs15 \
+More medical news at {\field{\*\fldinst{HYPERLINK "https://t.co/0Knf9q4SKS"}}{\fldrslt \cf3 \ul \ulc3 https://t.co/0Knf9q4SKS}}
+\f3\fs24 \
+
+\f2\fs15 #PharmaTwitter #MedTwitter #MedEd
+\f3\fs24 \
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://t.co/KiP4sqUWTw"}}{\fldrslt 
+\f2\fs15 \cf3 \ul \ulc3 https://t.co/KiP4sqUWTw}}\cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 0
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 0
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 0
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 0
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Pharmaceutical Publishers Feed
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 PharmaPublisher
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Look here 
+\f6 \uc0\u55357 \u56393 
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 #Pharmaceutical news from major publishers consolidated for a more streamlined industry news experience. 
+\f6 \uc0\u55357 \u56458 \u55357 \u56798 
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 2020-06-09 05:04:18
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 1
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 0
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 1218
+\f1\fs32 \cf2 \cell \lastrow\row
+\pard\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f3\fs24 \cf0 \
+\
+\
+\
+\pard\pardeftab720\ri-3600\sb360\sa240\qj\partightenfactor0
+
+\f0\b \cf2 Statistics Summary\
+\pard\pardeftab720\ri-3600\sa240\qj\partightenfactor0
+
+\f1\b0 \cf2 Total number of Tweets:\'a010, 624\
+Potential top 5 viral Tweets: From user having 1000+followers and the tweets has got 10+ likes.\
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth10890\trftsWidth3 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clcbpat8 \clwWidth633\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx540
+\clvertalt \clcbpat8 \clwWidth1202\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx1080
+\clvertalt \clcbpat8 \clwWidth519\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx1620
+\clvertalt \clcbpat8 \clwWidth1317\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx2160
+\clvertalt \clcbpat8 \clwWidth492\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx2700
+\clvertalt \clcbpat8 \clwWidth399\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx3240
+\clvertalt \clcbpat8 \clwWidth399\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx3780
+\clvertalt \clcbpat8 \clwWidth401\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx4320
+\clvertalt \clcbpat8 \clwWidth545\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx4860
+\clvertalt \clcbpat8 \clwWidth822\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx5400
+\clvertalt \clcbpat8 \clwWidth585\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx5940
+\clvertalt \clcbpat8 \clwWidth1239\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx6480
+\clvertalt \clcbpat8 \clwWidth519\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx7020
+\clvertalt \clcbpat8 \clwWidth569\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx7560
+\clvertalt \clcbpat8 \clwWidth566\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx8100
+\clvertalt \clcbpat8 \clwWidth683\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 author id
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 tweet id
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 tweet created at
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 tweet text
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 retweet count
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 reply count
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 like count
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 quote count
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 name
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 username
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 location
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 description
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 account created at
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 followers count
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 following count
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 tweet count
+\f3\b0\fs24 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth10890\trftsWidth3 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clcbpat9 \clwWidth633\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx540
+\clvertalt \clshdrawnil \clwWidth1202\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx1080
+\clvertalt \clshdrawnil \clwWidth519\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx1620
+\clvertalt \clshdrawnil \clwWidth1317\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth492\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx2700
+\clvertalt \clshdrawnil \clwWidth399\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx3240
+\clvertalt \clshdrawnil \clwWidth399\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx3780
+\clvertalt \clshdrawnil \clwWidth401\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth545\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx4860
+\clvertalt \clshdrawnil \clwWidth822\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx5400
+\clvertalt \clshdrawnil \clwWidth585\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx5940
+\clvertalt \clshdrawnil \clwWidth1239\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth519\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx7020
+\clvertalt \clshdrawnil \clwWidth569\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx7560
+\clvertalt \clshdrawnil \clwWidth566\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx8100
+\clvertalt \clshdrawnil \clwWidth683\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 593289567
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 1382097964550742016
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 2021-04-13 22:26:47
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 My comments in @ScienceMagazine with @GretchenVogel1 re the JnJ vaccine {\field{\*\fldinst{HYPERLINK "https://t.co/3CYhWSAaFE"}}{\fldrslt \cf3 \ul \ulc3 https://t.co/3CYhWSAaFE}}
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 17
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 2
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 54
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 1
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Prof Peter Hotez MD PhD
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 PeterHotez
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Montrose, Houston TX
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Vaccine Scientist-Pediatrician-Author-Combating Antiscience, Prof Dean @BCM_TropMed @TexasChildrens, Univ Prof @Baylor, Hagler Inst @TAMU, Founding Ed @PLOSNTDs
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 2012-05-29 00:46:55
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 165696
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 3639
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 28880
+\f3\fs24 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth10890\trftsWidth3 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clcbpat9 \clwWidth633\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx540
+\clvertalt \clshdrawnil \clwWidth1202\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx1080
+\clvertalt \clshdrawnil \clwWidth519\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx1620
+\clvertalt \clshdrawnil \clwWidth1317\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth492\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx2700
+\clvertalt \clshdrawnil \clwWidth399\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx3240
+\clvertalt \clshdrawnil \clwWidth399\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx3780
+\clvertalt \clshdrawnil \clwWidth401\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth545\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx4860
+\clvertalt \clshdrawnil \clwWidth822\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx5400
+\clvertalt \clshdrawnil \clwWidth585\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx5940
+\clvertalt \clshdrawnil \clwWidth1239\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth519\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx7020
+\clvertalt \clshdrawnil \clwWidth569\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx7560
+\clvertalt \clshdrawnil \clwWidth566\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx8100
+\clvertalt \clshdrawnil \clwWidth683\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 593289567
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 1382076033046839297
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 2021-04-13 20:59:38
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Going on @PnPCBC to speak with @VassyKapelos and my Canadian friends about the latest with JnJ and COVID19 vaccines
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 2
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 4
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 70
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 0
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Prof Peter Hotez MD PhD
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 PeterHotez
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Montrose, Houston TX
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Vaccine Scientist-Pediatrician-Author-Combating Antiscience, Prof Dean @BCM_TropMed @TexasChildrens, Univ Prof @Baylor, Hagler Inst @TAMU, Founding Ed @PLOSNTDs
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 2012-05-29 00:46:55
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 165696
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 3639
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 28880
+\f3\fs24 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth10890\trftsWidth3 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clcbpat9 \clwWidth633\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx540
+\clvertalt \clshdrawnil \clwWidth1202\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx1080
+\clvertalt \clshdrawnil \clwWidth519\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx1620
+\clvertalt \clshdrawnil \clwWidth1317\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth492\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx2700
+\clvertalt \clshdrawnil \clwWidth399\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx3240
+\clvertalt \clshdrawnil \clwWidth399\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx3780
+\clvertalt \clshdrawnil \clwWidth401\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth545\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx4860
+\clvertalt \clshdrawnil \clwWidth822\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx5400
+\clvertalt \clshdrawnil \clwWidth585\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx5940
+\clvertalt \clshdrawnil \clwWidth1239\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth519\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx7020
+\clvertalt \clshdrawnil \clwWidth569\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx7560
+\clvertalt \clshdrawnil \clwWidth566\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx8100
+\clvertalt \clshdrawnil \clwWidth683\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 449027230
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 1384616969391968267
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 2021-04-20 21:16:25
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 .@PeterHotez says all three regulatory bodies (@MHRAgovuk
+\f3\fs24 \
+
+\f2\fs15 @EMA_News @US_FDA) should issue a joint statement on a $JNJ vaccine decision.
+\f3\fs24 \
+
+\f2\fs15 \
+"One-off statements by regulatory authorities don't provide the level of reassurance that we need."
+\f3\fs24 \
+
+\f2\fs15 \'a0{\field{\*\fldinst{HYPERLINK "https://t.co/AhbJKptZ2c"}}{\fldrslt \cf3 \ul \ulc3 https://t.co/AhbJKptZ2c}}
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 3
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 1
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 41
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 0
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Anjalee Khemlani
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 AnjKhem
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 New York, NY
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Senior Reporter @YahooFinance | Covid-19, SDOH | insatiably curious 
+\f6 \uc0\u55358 \u56784 
+\f2 | No endorsements |\'a0
+\f3\fs24 \
+
+\f2\fs15 \
+anjalee.khemlani (at) {\field{\*\fldinst{HYPERLINK "https://t.co/vfMKPiPFwz"}}{\fldrslt \cf3 \ul \ulc3 https://t.co/vfMKPiPFwz}}
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 2011-12-28 17:12:33
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 6893
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 2413
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 16584
+\f3\fs24 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth10890\trftsWidth3 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clcbpat9 \clwWidth633\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx540
+\clvertalt \clshdrawnil \clwWidth1202\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx1080
+\clvertalt \clshdrawnil \clwWidth519\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx1620
+\clvertalt \clshdrawnil \clwWidth1317\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth492\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx2700
+\clvertalt \clshdrawnil \clwWidth399\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx3240
+\clvertalt \clshdrawnil \clwWidth399\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx3780
+\clvertalt \clshdrawnil \clwWidth401\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth545\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx4860
+\clvertalt \clshdrawnil \clwWidth822\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx5400
+\clvertalt \clshdrawnil \clwWidth585\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx5940
+\clvertalt \clshdrawnil \clwWidth1239\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth519\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx7020
+\clvertalt \clshdrawnil \clwWidth569\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx7560
+\clvertalt \clshdrawnil \clwWidth566\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx8100
+\clvertalt \clshdrawnil \clwWidth683\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 25562183
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 1384582695213277184
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 2021-04-20 19:00:13
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 The Netherlands will resume the use of Johnson &amp; Johnson's (JNJ.N) COVID-19 vaccine as of Wednesday, Dutch health minister Hugo de Jonge said on Tuesday.\uc0\u8203  {\field{\*\fldinst{HYPERLINK "https://t.co/bNrQhwUw3o"}}{\fldrslt \cf3 \ul \ulc3 https://t.co/bNrQhwUw3o}}
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 11
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 1
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 11
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 1
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Reuters Health
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Reuters_Health
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 NA
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Sharing health and medical news from around the world.
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 2009-03-20 19:43:34
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 255197
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 81
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 60938
+\f3\fs24 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth10890\trftsWidth3 \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clcbpat9 \clwWidth633\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx540
+\clvertalt \clshdrawnil \clwWidth1202\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx1080
+\clvertalt \clshdrawnil \clwWidth519\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx1620
+\clvertalt \clshdrawnil \clwWidth1317\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth492\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx2700
+\clvertalt \clshdrawnil \clwWidth399\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx3240
+\clvertalt \clshdrawnil \clwWidth399\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx3780
+\clvertalt \clshdrawnil \clwWidth401\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth545\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx4860
+\clvertalt \clshdrawnil \clwWidth822\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx5400
+\clvertalt \clshdrawnil \clwWidth585\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx5940
+\clvertalt \clshdrawnil \clwWidth1239\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth519\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx7020
+\clvertalt \clshdrawnil \clwWidth569\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx7560
+\clvertalt \clshdrawnil \clwWidth566\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx8100
+\clvertalt \clshdrawnil \clwWidth683\clftsWidth3 \clbrdrt\brdrs\brdrw15\brdrcf0 \clbrdrl\brdrs\brdrw15\brdrcf0 \clbrdrb\brdrs\brdrw15\brdrcf0 \clbrdrr\brdrs\brdrw15\brdrcf0 \clpadt60 \clpadl60 \clpadb60 \clpadr60 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f5\b\fs15 \cf0 25562183
+\f3\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 1384533584220917762
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 2021-04-20 15:45:04
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Europe's drug regulator has found a possible link between Johnson &amp; Johnson's (JNJ.N) COVID-19 vaccine and rare blood clotting issues in adults who received doses in the United States, but backed its overall benefits against any risks.\uc0\u8203  {\field{\*\fldinst{HYPERLINK "https://t.co/P9AXQVqJE6"}}{\fldrslt \cf3 \ul \ulc3 https://t.co/P9AXQVqJE6}}
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 8
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 0
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 11
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 1
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Reuters Health
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Reuters_Health
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 NA
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 Sharing health and medical news from around the world.
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 2009-03-20 19:43:34
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 255197
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 81
+\f3\fs24 \cell 
+\pard\intbl\itap1\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\fs15 \cf0 60938
+\f3\fs24 \cell \lastrow\row
+\pard\pardeftab720\ri-3600\sb360\sa240\qj\partightenfactor0
+
+\f0\b \cf2 \
+Known Gaps\
+	
+\f1\b0 Location data is self-identified and optional for Twitter users. This makes it hard to accurately identify where users 	are located and limit the dataset to our target base of US residents to understand unique cultural / social implications. \
+	Identifying buzzwords and hashtags to track conversations about the Johnson & Johnson vaccine was a challenge. The list we came up with is not exhaustive and could be honed ina the future.\
+\
+\pard\pardeftab720\li360\ri-3600\sb100\sa100\qj\partightenfactor0
+\cf7 \
+\pard\pardeftab720\ri-3600\sb100\sa100\qj\partightenfactor0
+\cf7 \
+\
+\pard\pardeftab720\ri-3600\sa320\qj\partightenfactor0
+
+\f0\b \cf0 \
+\
+\
+\pard\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f2\b0\fs32 \cf4 \
+\
+\
+\
+\pard\pardeftab720\ri-3600\qj\partightenfactor0
+
+\f3\fs24 \cf0 \
+}
